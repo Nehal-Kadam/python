@@ -212,3 +212,107 @@ public class Main {
 input : 6
 
 exp 7:
+
+import java.util.Scanner; public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in); int[] process_time = new int[10];
+        System.out.println("*** Ricart Agrawala Algorithm ***"); System.out.println("\n4*** Glancy Dsa ***"); System.out.print("Enter the number of processes: ");
+        int n = Integer.parseInt(scanner.nextLine()); System.out.println("Now enter their timestamps...");
+        for (int i = 0; i < n; i++) {
+            System.out.print("Enter the timestamp for Process [" + i + "]: "); process_time[i] = Integer.parseInt(scanner.nextLine());
+        }
+
+        System.out.print("Enter 2 process who wants a shared resource: "); String[] processIds = scanner.nextLine().split(" ");
+        int p1 = Integer.parseInt(processIds[0]); int p2 = Integer.parseInt(processIds[1]);
+
+        for (int i = 0; i < n; i++) {
+            System.out.println("Process [" + p1 + "] sends timestamp " + process_time[p1] + " to Process [" + i +"]" );
+        }
+
+        for (int i = 0; i < n; i++) {
+            System.out.println("Process [" + p2 + "] sends timestamp " + process_time[p2] + " to Process [" + i +"]" );
+        }
+
+        int p = (process_time[p1] < process_time[p2]) ? p1 : p2;
+
+        int t = Math.min(process_time[p1], process_time[p2]);
+
+        System.out.println("Process [" + p + "] has the lowest timestamp = " + t); for (int i = 0; i<n; i++){
+            if (i==p) continue;
+            else System.out.println("Process [" + i + "] sent OK! message to Process [" + p +"]" );
+        }
+        System.out.println("Hence Process [" + p + "] is accessing the shared resource, once it is done using it,");
+        System.out.println("Process [" + (p1 == p? p2:p1) + "] can use it");
+
+        scanner.close();
+    }
+}
+
+
+exp 8:
+class LoadBalancer:
+    def __init__(self):
+        self.servers = {}  # Dictionary to store servers and their processes
+
+    def add_server(self):
+        server_id = input("Enter server ID to add: ")
+        if server_id not in self.servers:
+            self.servers[server_id] = []
+            print(f"Server {server_id} added.")
+        else:
+            print(f"Server {server_id} already exists.")
+
+    def remove_server(self):
+        server_id = input("Enter server ID to remove: ")
+        if server_id in self.servers:
+            del self.servers[server_id]
+            print(f"Server {server_id} removed.")
+        else:
+            print(f"Server {server_id} does not exist.")
+
+    def add_process(self):
+        server_id = input("Enter server ID to add process to: ")
+        if server_id in self.servers:
+            process_id = input("Enter process ID to add: ")
+            self.servers[server_id].append(process_id)
+            print(f"Process {process_id} added to Server {server_id}.")
+        else:
+            print(f"Server {server_id} does not exist.")
+
+    def remove_process(self):
+        server_id = input("Enter server ID to remove process from: ")
+        if server_id in self.servers:
+            process_id = input("Enter process ID to remove: ")
+            if process_id in self.servers[server_id]:
+                self.servers[server_id].remove(process_id)
+                print(f"Process {process_id} removed from Server {server_id}.")
+            else:
+                print(f"Process {process_id} not found in Server {server_id}.")
+        else:
+            print(f"Server {server_id} does not exist.")
+
+    def display_servers(self):
+        print("Current Load Balancer State:")
+        for server, processes in self.servers.items():
+            print(f"Server {server}: {processes}")
+
+# Example Usage
+lb = LoadBalancer()
+while True:
+    print("\n1. Add Server\n2. Remove Server\n3. Add Process\n4. Remove Process\n5. Display Servers\n6. Exit")
+    choice = input("Enter your choice: ")
+    if choice == "1":
+        lb.add_server()
+    elif choice == "2":
+        lb.remove_server()
+    elif choice == "3":
+        lb.add_process()
+    elif choice == "4":
+        lb.remove_process()
+    elif choice == "5":
+        lb.display_servers()
+    elif choice == "6":
+        break
+    else:
+        print("Invalid choice, please try again.")
+
