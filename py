@@ -250,69 +250,113 @@ import java.util.Scanner; public class Main {
 
 
 exp 8:
-class LoadBalancer:
-    def __init__(self):
-        self.servers = {}  # Dictionary to store servers and their processes
+import java.util.*;
 
-    def add_server(self):
-        server_id = input("Enter server ID to add: ")
-        if server_id not in self.servers:
-            self.servers[server_id] = []
-            print(f"Server {server_id} added.")
-        else:
-            print(f"Server {server_id} already exists.")
+public class LoadBalancer {
+    private Map<String, List<String>> servers;
 
-    def remove_server(self):
-        server_id = input("Enter server ID to remove: ")
-        if server_id in self.servers:
-            del self.servers[server_id]
-            print(f"Server {server_id} removed.")
-        else:
-            print(f"Server {server_id} does not exist.")
+    public LoadBalancer() {
+        servers = new HashMap<>();
+    }
 
-    def add_process(self):
-        server_id = input("Enter server ID to add process to: ")
-        if server_id in self.servers:
-            process_id = input("Enter process ID to add: ")
-            self.servers[server_id].append(process_id)
-            print(f"Process {process_id} added to Server {server_id}.")
-        else:
-            print(f"Server {server_id} does not exist.")
+    public void addServer(Scanner scanner) {
+        System.out.print("Enter server ID to add: ");
+        String serverId = scanner.nextLine();
+        if (!servers.containsKey(serverId)) {
+            servers.put(serverId, new ArrayList<>());
+            System.out.println("Server " + serverId + " added.");
+        } else {
+            System.out.println("Server " + serverId + " already exists.");
+        }
+    }
 
-    def remove_process(self):
-        server_id = input("Enter server ID to remove process from: ")
-        if server_id in self.servers:
-            process_id = input("Enter process ID to remove: ")
-            if process_id in self.servers[server_id]:
-                self.servers[server_id].remove(process_id)
-                print(f"Process {process_id} removed from Server {server_id}.")
-            else:
-                print(f"Process {process_id} not found in Server {server_id}.")
-        else:
-            print(f"Server {server_id} does not exist.")
+    public void removeServer(Scanner scanner) {
+        System.out.print("Enter server ID to remove: ");
+        String serverId = scanner.nextLine();
+        if (servers.containsKey(serverId)) {
+            servers.remove(serverId);
+            System.out.println("Server " + serverId + " removed.");
+        } else {
+            System.out.println("Server " + serverId + " does not exist.");
+        }
+    }
 
-    def display_servers(self):
-        print("Current Load Balancer State:")
-        for server, processes in self.servers.items():
-            print(f"Server {server}: {processes}")
+    public void addProcess(Scanner scanner) {
+        System.out.print("Enter server ID to add process to: ");
+        String serverId = scanner.nextLine();
+        if (servers.containsKey(serverId)) {
+            System.out.print("Enter process ID to add: ");
+            String processId = scanner.nextLine();
+            servers.get(serverId).add(processId);
+            System.out.println("Process " + processId + " added to Server " + serverId + ".");
+        } else {
+            System.out.println("Server " + serverId + " does not exist.");
+        }
+    }
 
-# Example Usage
-lb = LoadBalancer()
-while True:
-    print("\n1. Add Server\n2. Remove Server\n3. Add Process\n4. Remove Process\n5. Display Servers\n6. Exit")
-    choice = input("Enter your choice: ")
-    if choice == "1":
-        lb.add_server()
-    elif choice == "2":
-        lb.remove_server()
-    elif choice == "3":
-        lb.add_process()
-    elif choice == "4":
-        lb.remove_process()
-    elif choice == "5":
-        lb.display_servers()
-    elif choice == "6":
-        break
-    else:
-        print("Invalid choice, please try again.")
+    public void removeProcess(Scanner scanner) {
+        System.out.print("Enter server ID to remove process from: ");
+        String serverId = scanner.nextLine();
+        if (servers.containsKey(serverId)) {
+            System.out.print("Enter process ID to remove: ");
+            String processId = scanner.nextLine();
+            List<String> processes = servers.get(serverId);
+            if (processes.contains(processId)) {
+                processes.remove(processId);
+                System.out.println("Process " + processId + " removed from Server " + serverId + ".");
+            } else {
+                System.out.println("Process " + processId + " not found in Server " + serverId + ".");
+            }
+        } else {
+            System.out.println("Server " + serverId + " does not exist.");
+        }
+    }
+
+    public void displayServers() {
+        System.out.println("Current Load Balancer State:");
+        if (servers.isEmpty()) {
+            System.out.println("No servers available.");
+            return;
+        }
+        for (Map.Entry<String, List<String>> entry : servers.entrySet()) {
+            System.out.println("Server " + entry.getKey() + ": " + entry.getValue());
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        LoadBalancer lb = new LoadBalancer();
+
+        while (true) {
+            System.out.println("\n1. Add Server\n2. Remove Server\n3. Add Process\n4. Remove Process\n5. Display Servers\n6. Exit");
+            System.out.print("Enter your choice: ");
+            String choice = scanner.nextLine();
+
+            switch (choice) {
+                case "1":
+                    lb.addServer(scanner);
+                    break;
+                case "2":
+                    lb.removeServer(scanner);
+                    break;
+                case "3":
+                    lb.addProcess(scanner);
+                    break;
+                case "4":
+                    lb.removeProcess(scanner);
+                    break;
+                case "5":
+                    lb.displayServers();
+                    break;
+                case "6":
+                    System.out.println("Exiting...");
+                    scanner.close();
+                    return;
+                default:
+                    System.out.println("Invalid choice, please try again.");
+            }
+        }
+    }
+}
+
 
